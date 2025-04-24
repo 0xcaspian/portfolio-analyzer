@@ -1,0 +1,93 @@
+.app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  color: white;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.title {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(45deg, #ffd700, #ffed4e);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
+.wallet-input-container {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.wallet-input {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1rem;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.wallet-input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.analyze-btn {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.1rem;
+  background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.analyze-btn:hover {
+  transform: translateY(-2px);
+}
+
+.networks-section {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 2rem;
+}
+
+.networks-title {
+  margin-bottom: 1rem;
+  color: #ffd700;
+}
+
+.networks-list {
+  list-style: none;
+  padding: 0;
+}
+
+.networks-list li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.networks-list li:last-child {
+  border-bottom: none;
+}

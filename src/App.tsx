@@ -1,47 +1,43 @@
 import { useState } from 'react'
+import './App.css'
 
 function App() {
   const [walletAddress, setWalletAddress] = useState('')
 
+  const handleAnalyze = () => {
+    if (!walletAddress) {
+      alert('Please enter a wallet address')
+      return
+    }
+    console.log('Analyzing wallet:', walletAddress)
+  }
+
   return (
-    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-      <h1>Portfolio Analyzer</h1>
-      <p>Analyze your crypto portfolio across multiple chains</p>
+    <div className="app">
+      <div className="header">
+        <h1 className="title">Portfolio Analyzer</h1>
+        <p className="subtitle">Analyze your crypto portfolio across multiple chains</p>
+      </div>
       
-      <div style={{ marginTop: '20px' }}>
+      <div className="wallet-input-container">
         <input
           type="text"
-          placeholder="Enter wallet address"
+          placeholder="Enter wallet address (0x...)"
           value={walletAddress}
           onChange={(e) => setWalletAddress(e.target.value)}
-          style={{ 
-            padding: '10px', 
-            width: '300px', 
-            marginRight: '10px',
-            border: '1px solid #ccc',
-            borderRadius: '4px'
-          }}
+          className="wallet-input"
         />
-        <button
-          style={{
-            padding: '10px 20px',
-            backgroundColor: '#007bff',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer'
-          }}
-        >
-          Analyze
+        <button onClick={handleAnalyze} className="analyze-btn">
+          Analyze Portfolio
         </button>
       </div>
       
-      <div style={{ marginTop: '30px' }}>
-        <h3>Supported Networks:</h3>
-        <ul>
-          <li>Ethereum</li>
-          <li>Binance Smart Chain</li>
-          <li>Polygon</li>
+      <div className="networks-section">
+        <h3 className="networks-title">Supported Networks</h3>
+        <ul className="networks-list">
+          <li>🔷 Ethereum Mainnet</li>
+          <li>🟡 Binance Smart Chain</li>
+          <li>🟣 Polygon</li>
         </ul>
       </div>
     </div>
