@@ -1,15 +1,29 @@
 import { useState } from 'react'
 import './App.css'
+import { isValidEthereumAddress } from './utils/wallet'
 
 function App() {
   const [walletAddress, setWalletAddress] = useState('')
+  const [isAnalyzing, setIsAnalyzing] = useState(false)
 
-  const handleAnalyze = () => {
-    if (!walletAddress) {
+  const handleAnalyze = async () => {
+    if (!walletAddress.trim()) {
       alert('Please enter a wallet address')
       return
     }
+    
+    if (!isValidEthereumAddress(walletAddress)) {
+      alert('Please enter a valid Ethereum address')
+      return
+    }
+    
+    setIsAnalyzing(true)
     console.log('Analyzing wallet:', walletAddress)
+    
+    setTimeout(() => {
+      setIsAnalyzing(false)
+      alert('Analysis complete! (Demo)')
+    }, 2000)
   }
 
   return (
@@ -27,8 +41,12 @@ function App() {
           onChange={(e) => setWalletAddress(e.target.value)}
           className="wallet-input"
         />
-        <button onClick={handleAnalyze} className="analyze-btn">
-          Analyze Portfolio
+        <button 
+          onClick={handleAnalyze} 
+          className="analyze-btn"
+          disabled={isAnalyzing}
+        >
+          {isAnalyzing ? 'Analyzing...' : 'Analyze Portfolio'}
         </button>
       </div>
       
