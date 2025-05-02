@@ -96,3 +96,140 @@
 .networks-list li:last-child {
   border-bottom: none;
 }
+
+/* Portfolio Display Styles */
+.portfolio-container {
+  margin-top: 2rem;
+}
+
+.portfolio-loading {
+  text-align: center;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid #ffd700;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.portfolio-header {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.total-value {
+  margin-top: 1rem;
+  font-size: 1.5rem;
+}
+
+.value-label {
+  display: block;
+  color: #ffd700;
+  margin-bottom: 0.5rem;
+}
+
+.value-amount {
+  font-weight: bold;
+  font-size: 2rem;
+  color: #4ade80;
+}
+
+.networks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.network-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 1.5rem;
+}
+
+.network-card h3 {
+  color: #ffd700;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.network-value {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #4ade80;
+  margin-bottom: 1rem;
+}
+
+.tokens-list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.token-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.token-item:last-child {
+  border-bottom: none;
+}
+
+.token-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.token-symbol {
+  font-weight: bold;
+  color: #ffd700;
+}
+
+.token-name {
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+.token-balance {
+  text-align: right;
+}
+
+.token-value {
+  font-size: 0.9rem;
+  color: #4ade80;
+}
+
+.no-tokens {
+  text-align: center;
+  opacity: 0.7;
+  font-style: italic;
+}
+
+.portfolio-footer {
+  text-align: center;
+  opacity: 0.7;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1rem;
+  border-radius: 10px;
+}
