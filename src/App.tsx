@@ -2,12 +2,14 @@ import { useState } from 'react'
 import './App.css'
 import { isValidEthereumAddress } from './utils/wallet'
 import PortfolioDisplay from './components/PortfolioDisplay'
+import ErrorMessage from './components/ErrorMessage'
 import { Portfolio, SupportedChains } from './types/portfolio'
 
 function App() {
   const [walletAddress, setWalletAddress] = useState('')
   const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [portfolio, setPortfolio] = useState<Portfolio | null>(null)
+  const [error, setError] = useState<string>('')
 
   const createMockPortfolio = (address: string): Portfolio => {
     return {
@@ -70,13 +72,15 @@ function App() {
   }
 
   const handleAnalyze = async () => {
+    setError('')
+    
     if (!walletAddress.trim()) {
-      alert('Please enter a wallet address')
+      setError('Please enter a wallet address')
       return
     }
     
     if (!isValidEthereumAddress(walletAddress)) {
-      alert('Please enter a valid Ethereum address')
+      setError('Please enter a valid Ethereum address (0x followed by 40 hex characters)')
       return
     }
     
@@ -84,9 +88,14 @@ function App() {
     setPortfolio(null)
     
     setTimeout(() => {
-      const mockPortfolio = createMockPortfolio(walletAddress)
-      setPortfolio(mockPortfolio)
-      setIsAnalyzing(false)
+      try {
+        const mockPortfolio = createMockPortfolio(walletAddress)
+        setPortfolio(mockPortfolio)
+      } catch (err) {
+        setError('Failed to analyze portfolio. Please try again.')
+      } finally {
+        setIsAnalyzing(false)
+      }
     }, 3000)
   }
 
@@ -113,6 +122,8 @@ function App() {
           {isAnalyzing ? 'Analyzing...' : 'Analyze Portfolio'}
         </button>
       </div>
+      
+      {error && <ErrorMessage message={error} onClose={() => setError('')} />}
       
       <PortfolioDisplay portfolio={portfolio} isLoading={isAnalyzing} />
       
