@@ -3,6 +3,7 @@ import './App.css'
 import { isValidEthereumAddress } from './utils/wallet'
 import PortfolioDisplay from './components/PortfolioDisplay'
 import ErrorMessage from './components/ErrorMessage'
+import Settings, { UserSettings } from './components/Settings'
 import { Portfolio, SupportedChains } from './types/portfolio'
 
 function App() {
@@ -10,6 +11,13 @@ function App() {
   const [isAnalyzing, setIsAnalyzing] = useState(false)
   const [portfolio, setPortfolio] = useState<Portfolio | null>(null)
   const [error, setError] = useState<string>('')
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false)
+  const [settings, setSettings] = useState<UserSettings>({
+    currency: 'USD',
+    refreshInterval: 5,
+    showSmallBalances: true,
+    theme: 'dark'
+  })
 
   const createMockPortfolio = (address: string): Portfolio => {
     return {
@@ -101,6 +109,14 @@ function App() {
 
   return (
     <div className="app">
+      <button 
+        className="settings-button"
+        onClick={() => setIsSettingsOpen(true)}
+        title="Settings"
+      >
+        ⚙️
+      </button>
+
       <div className="header">
         <h1 className="title">Portfolio Analyzer</h1>
         <p className="subtitle">Analyze your crypto portfolio across multiple chains</p>
@@ -135,6 +151,13 @@ function App() {
           <li>🟣 Polygon</li>
         </ul>
       </div>
+      
+      <Settings
+        settings={settings}
+        onSettingsChange={setSettings}
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+      />
     </div>
   )
 }

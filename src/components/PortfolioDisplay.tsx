@@ -1,10 +1,33 @@
 import { Portfolio } from '../types/portfolio'
+import { PriceChange } from '../types/history'
 import { shortenAddress, formatBalance } from '../utils/wallet'
+import PriceChangeIndicator from './PriceChangeIndicator'
 
 interface PortfolioDisplayProps {
   portfolio: Portfolio | null
   isLoading: boolean
 }
+
+const getMockPriceChanges = (): { [key: string]: PriceChange } => ({
+  '24h': {
+    period: '24h',
+    value: 245.67,
+    percentage: 1.6,
+    isPositive: true
+  },
+  '7d': {
+    period: '7d',
+    value: -89.23,
+    percentage: -0.58,
+    isPositive: false
+  },
+  '30d': {
+    period: '30d',
+    value: 1456.78,
+    percentage: 10.4,
+    isPositive: true
+  }
+})
 
 export default function PortfolioDisplay({ portfolio, isLoading }: PortfolioDisplayProps) {
   if (isLoading) {
@@ -20,6 +43,8 @@ export default function PortfolioDisplay({ portfolio, isLoading }: PortfolioDisp
     return null
   }
 
+  const priceChanges = getMockPriceChanges()
+
   return (
     <div className="portfolio-container">
       <div className="portfolio-header">
@@ -28,6 +53,12 @@ export default function PortfolioDisplay({ portfolio, isLoading }: PortfolioDisp
         <div className="total-value">
           <span className="value-label">Total Value:</span>
           <span className="value-amount">${formatBalance(portfolio.totalValue, 2)}</span>
+        </div>
+        
+        <div className="price-changes-grid">
+          {Object.values(priceChanges).map((change) => (
+            <PriceChangeIndicator key={change.period} priceChange={change} />
+          ))}
         </div>
       </div>
 
