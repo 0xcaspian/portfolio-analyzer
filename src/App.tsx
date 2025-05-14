@@ -1,10 +1,12 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import { isValidEthereumAddress } from './utils/wallet'
 import PortfolioDisplay from './components/PortfolioDisplay'
 import ErrorMessage from './components/ErrorMessage'
 import Settings, { UserSettings } from './components/Settings'
+import Notification from './components/Notification'
 import { Portfolio, SupportedChains } from './types/portfolio'
+import { useAutoRefresh } from './hooks/useAutoRefresh'
 
 function App() {
   const [walletAddress, setWalletAddress] = useState('')
@@ -12,6 +14,10 @@ function App() {
   const [portfolio, setPortfolio] = useState<Portfolio | null>(null)
   const [error, setError] = useState<string>('')
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
+  const [notification, setNotification] = useState<{
+    message: string
+    type: 'success' | 'info' | 'warning' | 'error'
+  } | null>(null)
   const [settings, setSettings] = useState<UserSettings>({
     currency: 'USD',
     refreshInterval: 5,
@@ -79,6 +85,34 @@ function App() {
     }
   }
 
+  const refreshPortfolio = async (showNotification = false) => {
+    if (!portfolio || !walletAddress) return
+    
+    setIsAnalyzing(true)
+    
+    setTimeout(() => {
+      try {
+        const mockPortfolio = createMockPortfolio(walletAddress)
+        setPortfolio(mockPortfolio)
+        if (showNotification) {
+          setNotification({
+            message: 'Portfolio refreshed successfully',
+            type: 'success'
+          })
+        }
+      } catch (err) {
+        if (showNotification) {
+          setNotification({
+            message: 'Failed to refresh portfolio',
+            type: 'error'
+          })
+        }
+      } finally {
+        setIsAnalyzing(false)
+      }
+    }, 1500)
+  }
+
   const handleAnalyze = async () => {
     setError('')
     
@@ -99,6 +133,10 @@ function App() {
       try {
         const mockPortfolio = createMockPortfolio(walletAddress)
         setPortfolio(mockPortfolio)
+        setNotification({
+          message: 'Portfolio analyzed successfully',
+          type: 'success'
+        })
       } catch (err) {
         setError('Failed to analyze portfolio. Please try again.')
       } finally {
@@ -106,6 +144,48 @@ function App() {
       }
     }, 3000)
   }
+
+  useAutoRefresh(
+    () => refreshPortfolio(true),
+    settings.refreshInterval,
+    !!portfolio
+  )
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.ctrlKey || event.metaKey) {
+        switch (event.key) {
+          case ',':
+            event.preventDefault()
+            setIsSettingsOpen(true)
+            break
+          case 'r':
+            event.preventDefault()
+            if (portfolio) {
+              refreshPortfolio(true)
+            }
+            break
+        }
+      }
+      
+      if (event.key === 'Enter' && !isAnalyzing) {
+        event.preventDefault()
+        handleAnalyze()
+      }
+      
+      if (event.key === 'Escape') {
+        if (isSettingsOpen) {
+          setIsSettingsOpen(false)
+        }
+        if (notification) {
+          setNotification(null)
+        }
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [portfolio, isAnalyzing, isSettingsOpen, notification, walletAddress])
 
   return (
     <div className="app">
@@ -123,17 +203,27 @@ function App() {
       </div>
       
       <div className="wallet-input-container">
+        <label htmlFor="wallet-address" className="sr-only">
+          Wallet Address
+        </label>
         <input
+          id="wallet-address"
           type="text"
           placeholder="Enter wallet address (0x...)"
           value={walletAddress}
           onChange={(e) => setWalletAddress(e.target.value)}
           className="wallet-input"
+          aria-describedby="wallet-help"
+          autoComplete="off"
         />
+        <div id="wallet-help" className="sr-only">
+          Enter a valid Ethereum wallet address to analyze your portfolio
+        </div>
         <button 
           onClick={handleAnalyze} 
           className="analyze-btn"
           disabled={isAnalyzing}
+          aria-label={isAnalyzing ? 'Analyzing portfolio' : 'Analyze portfolio'}
         >
           {isAnalyzing ? 'Analyzing...' : 'Analyze Portfolio'}
         </button>
@@ -158,6 +248,20 @@ function App() {
         isOpen={isSettingsOpen}
         onClose={() => setIsSettingsOpen(false)}
       />
+      
+      {notification && (
+        <Notification
+          message={notification.message}
+          type={notification.type}
+          onClose={() => setNotification(null)}
+        />
+      )}
+      
+      {portfolio && (
+        <div className="refresh-indicator">
+          🔄 Auto-refresh every {settings.refreshInterval} min
+        </div>
+      )}
     </div>
   )
 }

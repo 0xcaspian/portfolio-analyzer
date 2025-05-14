@@ -66,11 +66,6 @@
   transform: translateY(-2px);
 }
 
-.analyze-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
 .networks-section {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
@@ -123,6 +118,17 @@
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.analyze-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  animation: pulse 2s infinite;
 }
 
 .portfolio-header {
@@ -482,4 +488,263 @@
 .settings-button:hover {
   background: rgba(255, 255, 255, 0.2);
   transform: scale(1.05);
+}
+
+/* Notification Styles */
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  max-width: 400px;
+  z-index: 1001;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.notification.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.notification.hidden {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+.notification-success {
+  border-color: rgba(74, 222, 128, 0.5);
+  background: rgba(74, 222, 128, 0.1);
+}
+
+.notification-info {
+  border-color: rgba(59, 130, 246, 0.5);
+  background: rgba(59, 130, 246, 0.1);
+}
+
+.notification-warning {
+  border-color: rgba(245, 158, 11, 0.5);
+  background: rgba(245, 158, 11, 0.1);
+}
+
+.notification-error {
+  border-color: rgba(239, 68, 68, 0.5);
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.notification-icon {
+  margin-right: 0.75rem;
+  font-size: 1.2rem;
+}
+
+.notification-message {
+  flex: 1;
+  color: white;
+  font-weight: 500;
+}
+
+.notification-close {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-left: 0.75rem;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.notification-close:hover {
+  opacity: 1;
+}
+
+/* Auto refresh indicator */
+.refresh-indicator {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  color: white;
+  opacity: 0.7;
+  z-index: 100;
+}
+
+/* Accessibility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Focus styles */
+.wallet-input:focus,
+.analyze-btn:focus,
+.settings-button:focus,
+.btn-primary:focus,
+.btn-secondary:focus {
+  outline: 2px solid #ffd700;
+  outline-offset: 2px;
+}
+
+.settings-modal:focus-within {
+  outline: none;
+}
+
+/* Keyboard shortcuts help */
+.shortcuts-help {
+  position: fixed;
+  bottom: 60px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  padding: 1rem;
+  font-size: 0.8rem;
+  color: white;
+  opacity: 0.8;
+  max-width: 200px;
+}
+
+.shortcuts-help h4 {
+  margin: 0 0 0.5rem 0;
+  color: #ffd700;
+}
+
+.shortcuts-help ul {
+  margin: 0;
+  padding-left: 1rem;
+  list-style: none;
+}
+
+.shortcuts-help li {
+  margin-bottom: 0.25rem;
+}
+
+.shortcut-key {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-size: 0.7rem;
+  margin-right: 0.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .app {
+    padding: 1rem;
+  }
+  
+  .title {
+    font-size: 2rem;
+  }
+  
+  .subtitle {
+    font-size: 1rem;
+  }
+  
+  .wallet-input-container {
+    padding: 1.5rem;
+  }
+  
+  .wallet-input {
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+  
+  .settings-button {
+    top: 1rem;
+    right: 1rem;
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+  
+  .networks-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .price-changes-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+  }
+  
+  .price-change {
+    padding: 0.75rem;
+  }
+  
+  .period-label {
+    font-size: 0.7rem;
+  }
+  
+  .change-value {
+    font-size: 1rem;
+  }
+  
+  .change-percentage {
+    font-size: 0.8rem;
+  }
+  
+  .settings-modal {
+    width: 95%;
+    margin: 0 1rem;
+  }
+  
+  .notification {
+    top: 10px;
+    right: 10px;
+    left: 10px;
+    max-width: none;
+  }
+  
+  .refresh-indicator {
+    bottom: 10px;
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
+  }
+  
+  .token-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .token-balance {
+    text-align: left !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .price-changes-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .value-amount {
+    font-size: 1.5rem;
+  }
+  
+  .network-card {
+    padding: 1rem;
+  }
+  
+  .networks-section,
+  .portfolio-header,
+  .wallet-input-container {
+    padding: 1rem;
+  }
 }
