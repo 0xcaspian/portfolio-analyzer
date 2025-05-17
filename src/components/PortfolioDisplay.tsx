@@ -1,7 +1,9 @@
 import { Portfolio } from '../types/portfolio'
 import { PriceChange } from '../types/history'
 import { shortenAddress, formatBalance } from '../utils/wallet'
+import { exportToCsv, exportToJson } from '../utils/export'
 import PriceChangeIndicator from './PriceChangeIndicator'
+import SimpleChart from './SimpleChart'
 
 interface PortfolioDisplayProps {
   portfolio: Portfolio | null
@@ -29,6 +31,27 @@ const getMockPriceChanges = (): { [key: string]: PriceChange } => ({
   }
 })
 
+const getMockChartData = (baseValue: number) => {
+  const data = []
+  const now = new Date()
+  
+  for (let i = 6; i >= 0; i--) {
+    const date = new Date(now)
+    date.setDate(date.getDate() - i)
+    
+    const randomVariation = (Math.random() - 0.5) * 0.1
+    const trend = i === 6 ? 0 : (6 - i) * 0.02
+    const value = baseValue * (1 + trend + randomVariation)
+    
+    data.push({
+      time: date.toISOString().split('T')[0],
+      value: Math.max(0, value)
+    })
+  }
+  
+  return data
+}
+
 export default function PortfolioDisplay({ portfolio, isLoading }: PortfolioDisplayProps) {
   if (isLoading) {
     return (
@@ -44,6 +67,7 @@ export default function PortfolioDisplay({ portfolio, isLoading }: PortfolioDisp
   }
 
   const priceChanges = getMockPriceChanges()
+  const chartData = getMockChartData(portfolio.totalValue)
 
   return (
     <div className="portfolio-container">
@@ -60,6 +84,8 @@ export default function PortfolioDisplay({ portfolio, isLoading }: PortfolioDisp
             <PriceChangeIndicator key={change.period} priceChange={change} />
           ))}
         </div>
+        
+        <SimpleChart data={chartData} />
       </div>
 
       <div className="networks-grid">
@@ -94,6 +120,22 @@ export default function PortfolioDisplay({ portfolio, isLoading }: PortfolioDisp
       
       <div className="portfolio-footer">
         <small>Last updated: {new Date(portfolio.lastUpdated).toLocaleString()}</small>
+        <div className="export-buttons">
+          <button 
+            className="export-btn"
+            onClick={() => exportToCsv(portfolio)}
+            title="Export as CSV"
+          >
+            📊 CSV
+          </button>
+          <button 
+            className="export-btn"
+            onClick={() => exportToJson(portfolio)}
+            title="Export as JSON"
+          >
+            📄 JSON
+          </button>
+        </div>
       </div>
     </div>
   )

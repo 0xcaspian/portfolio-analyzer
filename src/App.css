@@ -233,11 +233,39 @@
 }
 
 .portfolio-footer {
-  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   opacity: 0.7;
   background: rgba(255, 255, 255, 0.05);
   padding: 1rem;
   border-radius: 10px;
+}
+
+.export-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.export-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  color: white;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.export-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.export-btn:focus {
+  outline: 2px solid #ffd700;
+  outline-offset: 2px;
 }
 
 /* Error Message Styles */
@@ -642,6 +670,48 @@
   border-radius: 3px;
   font-size: 0.7rem;
   margin-right: 0.5rem;
+}
+
+/* Chart Styles */
+.simple-chart {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.chart-header h4 {
+  margin: 0;
+  color: #ffd700;
+  font-size: 1rem;
+}
+
+.trend-indicator {
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.trend-indicator.positive {
+  color: #4ade80;
+}
+
+.trend-indicator.negative {
+  color: #ff6b6b;
+}
+
+.chart-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  opacity: 0.7;
 }
 
 /* Responsive Design */
